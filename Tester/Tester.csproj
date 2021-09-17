@@ -14,4 +14,10 @@
     <ProjectReference Include="..\GreenPass\GreenPass.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="GP-Data.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

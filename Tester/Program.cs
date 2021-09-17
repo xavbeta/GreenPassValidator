@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Tester
@@ -17,9 +18,10 @@ namespace Tester
 
         static async System.Threading.Tasks.Task Main(string[] args)
         {
+            string gpText = GetGPText(args);
 
             Initialize();
-            var res = await LoadGP("HC1:6BFOXN%TS3DHPVO13J /G...");
+            var res = await LoadGP(gpText);
 
             int validity = GetCertificateValidity(res);
             var expiration = res.IssuedDate.AddHours(validity);
@@ -27,6 +29,14 @@ namespace Tester
             Console.WriteLine($"Documento associato a {res.Dgc.Nam.Fn} {res.Dgc.Nam.Gn}");
             Console.WriteLine($"Il Green Pass è {(expiration > DateTime.Now? "Valido fino al " + expiration : "Scaduto")}");
 
+        }
+
+        private static string GetGPText(string[] args)
+        {
+            if (args.Length > 0)
+                return File.ReadAllText(args[0]);
+            else
+                return ""; //TODO: Read QR Code From Camera
         }
 
         private static int GetCertificateValidity(SignedDGC res)
